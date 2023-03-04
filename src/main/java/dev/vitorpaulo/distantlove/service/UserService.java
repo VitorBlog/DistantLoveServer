@@ -1,5 +1,6 @@
 package dev.vitorpaulo.distantlove.service;
 
+import dev.vitorpaulo.distantlove.model.BucketFolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,13 +16,18 @@ import dev.vitorpaulo.distantlove.repository.UserRepository;
 import dev.vitorpaulo.distantlove.request.VerifyEmailRequest;
 import dev.vitorpaulo.distantlove.response.GetUserResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Service
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
 
-    private final GetUserResponseMapper userResponseMapper;
+    private final MinioService minioService;
     private final UserRepository userRepository;
+
+    private final GetUserResponseMapper userResponseMapper;
 
     public GetUserResponse getSelfUser(User user) {
         return userResponseMapper.apply(user);
@@ -41,5 +47,12 @@ public class UserService implements UserDetailsService {
         return new DetailedUser(
             userRepository.findByEmail(username.toLowerCase()).orElseThrow(EmailNotFoundException::new)
         );
+    }
+
+    public void updatePhoto(User user, MultipartFile photo) throws IOException {
+        user.setAvatar(
+                minioService.uploadPhoto(BucketFolder.USER_AVATAR, photo.getInputStream(), "png")
+        );
+        userRepository.save(user);
     }
 }
