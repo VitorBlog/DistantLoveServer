@@ -1,5 +1,6 @@
 package dev.vitorpaulo.distantlove.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/email")
-    public void verifyEmail(@RequestBody VerifyEmailRequest request) throws UserAlreadyExistsException {
+    public void verifyEmail(@Valid @RequestBody VerifyEmailRequest request) throws UserAlreadyExistsException {
         userService.verifyEmail(request);
     }
 
