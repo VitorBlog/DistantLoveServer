@@ -28,7 +28,7 @@ public class MinioService {
         final var name = RandomStringUtils.randomAlphanumeric(15) + "." + extension;
         uploadPhoto(folder, name, stream);
 
-        return folder.name().toLowerCase() + SEPARATOR + name;
+        return name;
     }
 
     public String uploadPhotoAndSign(BucketFolder folder, String name, InputStream stream) {

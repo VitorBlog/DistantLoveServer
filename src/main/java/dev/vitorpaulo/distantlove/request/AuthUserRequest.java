@@ -16,6 +16,6 @@ public class AuthUserRequest implements Serializable {
     @Email
     private String email;
 
-    @Size(min = 8, max = 40)
+    @Size(min = 5, max = 40)
     private String password;
 }
