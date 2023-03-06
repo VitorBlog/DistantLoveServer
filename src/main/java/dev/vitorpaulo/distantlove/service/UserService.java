@@ -34,8 +34,9 @@ public class UserService implements UserDetailsService {
     }
 
     public void verifyEmail(VerifyEmailRequest request) throws UserAlreadyExistsException {
-        userRepository.findByEmail(request.getEmail())
-            .orElseThrow(UserAlreadyExistsException::new);
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new UserAlreadyExistsException();
+        }
     }
 
     public User getUserById(Long id) throws UserNotFoundException {
