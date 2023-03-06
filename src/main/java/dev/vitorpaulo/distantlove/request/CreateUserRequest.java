@@ -7,19 +7,21 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreateUserRequest implements Serializable {
 
     @Size(min = 3, max = 40)
-    private final String name;
+    private String name;
 
     @Email
-    private final String email;
+    private String email;
 
     @Size(min = 5, max = 40)
-    private final String password;
+    private String password;
 
-    private final Pronoun pronoun;
+    private Pronoun pronoun;
 }
