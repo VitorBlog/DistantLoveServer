@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import dev.vitorpaulo.distantlove.model.BucketFolder;
@@ -50,6 +51,10 @@ public class MinioService {
     }
 
     public String getSignedPhoto(BucketFolder folder, String name) {
+        if (StringUtils.isBlank(name)) {
+            return null;
+        }
+
         return getSignedPhoto(folder.name().toLowerCase() + SEPARATOR + name);
     }
 
