@@ -39,10 +39,6 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public User getUserById(Long id) throws UserNotFoundException {
-        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return new DetailedUser(
@@ -55,5 +51,13 @@ public class UserService implements UserDetailsService {
                 minioService.uploadPhoto(BucketFolder.USER_AVATAR, photo.getInputStream(), "png")
         );
         userRepository.save(user);
+    }
+
+    public User getUserById(Long id) throws UserNotFoundException {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+    }
+
+    public User getUserByCode(String code) throws UserNotFoundException {
+        return userRepository.findByCode(code).orElseThrow(UserNotFoundException::new);
     }
 }
