@@ -52,7 +52,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
                     final var token = jwtParser.parseClaimsJws(header);
 
                     if (token.getBody().containsKey("id")) {
-                        final var user = new DetailedUser(userService.getUserById(token.getBody().get("id", Long.class)));
+                        final var user = new DetailedUser(userService.findUserById(token.getBody().get("id", Long.class)));
 
                         final var authentication = new UsernamePasswordAuthenticationToken(
                                 user,

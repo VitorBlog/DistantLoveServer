@@ -53,11 +53,21 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public User getUserById(Long id) throws UserNotFoundException {
+
+    public void removeCode(User user) {
+        user.setCode(null);
+        userRepository.save(user);
+    }
+
+    public User findUserById(Long id) throws UserNotFoundException {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
-    public User getUserByCode(String code) throws UserNotFoundException {
+    public GetUserResponse getUserByCode(String code) throws UserNotFoundException {
+        return userResponseMapper.apply(findUserByCode(code));
+    }
+
+    public User findUserByCode(String code) throws UserNotFoundException {
         return userRepository.findByCode(code).orElseThrow(UserNotFoundException::new);
     }
 }
