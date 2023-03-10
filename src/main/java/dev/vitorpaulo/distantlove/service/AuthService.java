@@ -40,6 +40,7 @@ public class AuthService {
             .email(request.getEmail())
             .password(passwordEncoder.encode(request.getPassword()))
             .pronoun(request.getPronoun())
+            .code(RandomStringUtils.randomNumeric(6))
             .refreshToken(RandomStringUtils.randomAlphanumeric(15))
             .createdAt(new Date())
             .build();

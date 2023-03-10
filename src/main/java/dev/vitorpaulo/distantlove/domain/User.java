@@ -34,6 +34,8 @@ public class User {
 
     private String avatar;
 
+    private String code;
+
     @Lob
     private String firebaseToken;
 
