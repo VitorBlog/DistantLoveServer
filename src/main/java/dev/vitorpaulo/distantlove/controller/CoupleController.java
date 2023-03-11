@@ -1,6 +1,8 @@
 package dev.vitorpaulo.distantlove.controller;
 
 import dev.vitorpaulo.distantlove.exception.InvalidUserCodeException;
+import dev.vitorpaulo.distantlove.exception.UserDoesntHasCoupleException;
+import dev.vitorpaulo.distantlove.response.GetCoupleResponse;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,5 +27,10 @@ public class CoupleController {
     public void create(@AuthenticationPrincipal DetailedUser user, @PathVariable String code)
             throws UserNotFoundException, UserAlreadyHasCoupleException, InvalidUserCodeException {
         coupleService.create(user.getUser(), code);
+    }
+
+    @GetMapping
+    public GetCoupleResponse getSelfCouple(@AuthenticationPrincipal DetailedUser user) throws UserDoesntHasCoupleException {
+        return coupleService.getSelfCouple(user.getUser());
     }
 }
