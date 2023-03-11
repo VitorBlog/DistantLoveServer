@@ -2,11 +2,9 @@ package dev.vitorpaulo.distantlove.domain;
 
 import java.util.Date;
 
-import dev.vitorpaulo.distantlove.model.Pronoun;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,30 +17,17 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Couple {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    private String name;
+    // List<CoupleDate>
+    // Gallery
+    // Interaction
 
-    private String email;
-
-    @Lob
-    private String password;
-
-    private String avatar;
-
-    private String code;
-
-    @Lob
-    private String firebaseToken;
-
-    @Lob
-    private String refreshToken;
-
-    private Pronoun pronoun;
+    private Date anniversary;
 
     private Date createdAt;
 }

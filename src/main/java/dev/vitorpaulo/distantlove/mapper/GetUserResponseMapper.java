@@ -24,6 +24,7 @@ public class GetUserResponseMapper implements Function<User, GetUserResponse> {
             .email(user.getEmail())
             .avatar(minioService.getSignedPhoto(BucketFolder.USER_AVATAR, user.getAvatar()))
             .pronoun(user.getPronoun())
+            .code(user.getCode())
             .createdAt(user.getCreatedAt())
             .build();
     }

@@ -1,5 +1,6 @@
 package dev.vitorpaulo.distantlove.controller;
 
+import dev.vitorpaulo.distantlove.exception.UserNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,12 @@ public class UserController {
     @GetMapping("/me")
     public GetUserResponse getSelfUser(@AuthenticationPrincipal DetailedUser user) {
         return userService.getSelfUser(user.getUser());
+    }
+
+    @GetMapping("/code/{code}")
+    public GetUserResponse getSelfUser(@AuthenticationPrincipal DetailedUser user, @PathVariable String code)
+        throws UserNotFoundException {
+        return userService.getUserByCode(code);
     }
 
     @PostMapping("/email")

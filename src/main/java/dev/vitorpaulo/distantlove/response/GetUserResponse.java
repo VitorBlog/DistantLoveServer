@@ -17,6 +17,7 @@ public class GetUserResponse implements Serializable {
     private final String name;
     private final String email;
     private final String avatar;
+    private final String code;
     private final Pronoun pronoun;
     private final Date createdAt;
 }
