@@ -2,6 +2,7 @@ package dev.vitorpaulo.distantlove.service;
 
 import java.util.Date;
 
+import dev.vitorpaulo.distantlove.exception.InvalidUserCodeException;
 import org.springframework.stereotype.Service;
 
 import dev.vitorpaulo.distantlove.domain.Couple;
@@ -22,7 +23,11 @@ public class CoupleService {
     private final CoupleRepository coupleRepository;
     private final CoupleMemberRepository memberRepository;
 
-    public void create(User user, String code) throws UserNotFoundException, UserAlreadyHasCoupleException {
+    public void create(User user, String code) throws UserNotFoundException, UserAlreadyHasCoupleException, InvalidUserCodeException {
+        if (user.getCode().equals(code)) {
+            throw new InvalidUserCodeException();
+        }
+
         final var partner = userService.findUserByCode(code);
 
         if (memberRepository.existsByUser(user) || memberRepository.existsByUser(partner)) {
