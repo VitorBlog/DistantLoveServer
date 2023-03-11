@@ -3,6 +3,10 @@ package dev.vitorpaulo.distantlove.service;
 import java.util.Date;
 
 import dev.vitorpaulo.distantlove.exception.InvalidUserCodeException;
+import dev.vitorpaulo.distantlove.exception.UserDoesntHasCoupleException;
+import dev.vitorpaulo.distantlove.mapper.GetUserResponseMapper;
+import dev.vitorpaulo.distantlove.response.GetCoupleMemberResponse;
+import dev.vitorpaulo.distantlove.response.GetCoupleResponse;
 import org.springframework.stereotype.Service;
 
 import dev.vitorpaulo.distantlove.domain.Couple;
@@ -22,6 +26,8 @@ public class CoupleService {
 
     private final CoupleRepository coupleRepository;
     private final CoupleMemberRepository memberRepository;
+
+    private final GetUserResponseMapper userResponseMapper;
 
     public void create(User user, String code) throws UserNotFoundException, UserAlreadyHasCoupleException, InvalidUserCodeException {
         if (user.getCode().equals(code)) {
@@ -44,5 +50,31 @@ public class CoupleService {
 
         userService.removeCode(user);
         userService.removeCode(partner);
+    }
+
+    public GetCoupleResponse getSelfCouple(User user) throws UserDoesntHasCoupleException {
+        final var member = findMember(user);
+        final var couple = member.getCouple();
+        final var partner = findPartner(couple, user);
+
+        return GetCoupleResponse.builder()
+                .id(couple.getId())
+                .anniversary(couple.getAnniversary())
+                .createdAt(couple.getCreatedAt())
+                .partner(
+                        GetCoupleMemberResponse.builder()
+                                .id(partner.getId())
+                                .user(userResponseMapper.apply(partner.getUser()))
+                                .build()
+                )
+                .build();
+    }
+
+    public CoupleMember findMember(User user) throws UserDoesntHasCoupleException {
+        return memberRepository.findByUser(user).orElseThrow(UserDoesntHasCoupleException::new);
+    }
+
+    public CoupleMember findPartner(Couple couple, User user) throws UserDoesntHasCoupleException {
+        return memberRepository.findByCoupleAndUserIsNot(couple, user).orElseThrow(UserDoesntHasCoupleException::new);
     }
 }
